@@ -5,7 +5,16 @@
 <?php require_once './requete/config.php'; ?>
 <?php require_once './requete/get_toys.php'; ?>
 
-<h1>Liste des jouets</h1>
+
+<?php
+
+// on regarde si on a une valeur postée
+// si c'est vide on lui donne la valeur 0
+// sinon on lui donne la valeur de $_POST['brand']
+$brand_id = empty($_POST['brand']) ? 0 : $_POST['brand'];
+
+get_title($brand_id); ?>
+
 
 <form method="post">
     <select name="brand">
@@ -15,10 +24,10 @@
     <input type="submit" value="OK">
 </form>
 
-<?php var_dump($_POST); ?>
 <div class="d-flex flex-wrap justify-content-center">
-    <?php get_all_toys($_POST['brand']); ?>
+    <?php
+    get_all_toys($brand_id);
+    ?>
 </div>
-
 
 <?php require_once './template/_footer.php'; ?>
