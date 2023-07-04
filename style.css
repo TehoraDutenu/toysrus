@@ -21,21 +21,13 @@ body {
 }
 
 .custom-background {
-    background-color: red;
+    background-color: #8080ff;
 }
 
-.wesh {
-    color: 2px 2px blue !important;
-    text-shadow: #f3efef;
-}
-
-.wesh:visited {
-    color: #f3efef !important;
-}
 
 h1,
 title {
-    color: #f3efef;
+    color: black;
     text-shadow: 2px 2px blue;
 }
 
@@ -45,9 +37,11 @@ title {
     object-fit: contain;
 }
 
+
 a {
     text-decoration: none;
 }
+
 
 .toy_img {
     width: 100%;
@@ -62,5 +56,9 @@ a {
 .toy_price {
     text-align: center;
     font-size: 35px;
+    color: black;
+}
+
+.dropdown {
     color: black;
 }

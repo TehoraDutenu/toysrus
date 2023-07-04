@@ -506,4 +506,29 @@ FROM toys AS t
     INNER JOIN sales as s ON t.id = s.toy_id
 GROUP BY t.id
 ORDER BY total DESC
-LIMIT 3
+LIMIT 3;
+
+SELECT
+    brands.name,
+    brands.id,
+    COUNT(toys.brand_id) AS total
+FROM brands
+    INNER JOIN toys ON brands.id = toys.brand_id
+GROUP BY brands.id;
+
+SELECT
+    stock.quantity,
+    toys.id,
+    toys.name,
+    toys.description,
+    toys.price,
+    toys.image,
+    stores.name AS store_name,
+    stores.postal_code,
+    stores.city,
+    brands.name AS brand_name
+FROM stock
+    INNER JOIN toys ON stock.toy_id = toys.id
+    INNER JOIN stores ON stock.store_id = stores.id
+    INNER JOIN brands ON toys.brand_id = brands.id
+WHERE stores.id = 1;

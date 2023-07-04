@@ -47,3 +47,31 @@ function render_toy_detail($toy)
     </div>
 <?php
 }
+
+function render_toy_by_store($toy)
+{
+    // si le stock est à on affiche "produit épuisé" sinon on affiche la quantité
+    $quantity = $toy['quantity'] == 0 ? "Produit épuisé" : $toy['quantity'];
+    $color = $toy['quantity'] == 0 ? "text-danger" : ($toy['quantity'] < 5 ? "text-warning" : "text-primary");
+?>
+
+    <div class="card mb-3" style="width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="../img/<?php echo $toy['image'] ?>" class="img-fluid rounded-start " alt="<?php echo $toy['name'] ?>">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo $toy['name'] ?></h5>
+                    <p class="card-text"><?php echo str_replace('.', ',', $toy['price']) ?>€</p>
+                    <p class="card-text">Stock disponible :
+                        <small class="<?php echo $color ?> fw-bold"><?php echo $quantity ?></small>
+                    </p>
+                    <a href="../details.php?toy_id=<?php echo $toy['id'] ?>" class="btn btn-outline-primary">Détails</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<?php
+}

@@ -176,7 +176,7 @@ function get_toys_by_store($toy_id, $store_id)
                     <span class="text-primary">Stock: </span>
                     <?php echo $stock['total']; ?>
                 </p>
-<?php
+            <?php
             }
         }
     }
@@ -205,6 +205,141 @@ function get_top_3()
         if (mysqli_num_rows($result) > 0) {
             while ($toy = mysqli_fetch_assoc($result)) {
                 render_toy($toy);
+            }
+        }
+    }
+}
+
+
+function get_toys_by_brand()
+{
+    global $connection;
+
+    $query = "SELECT brands.name, brands.id, COUNT(toys.brand_id) AS total
+                FROM brands
+                INNER JOIN toys
+                ON brands.id = toys.brand_id
+                GROUP BY brands.id";
+
+    if ($result = mysqli_query($connection, $query)) {
+        if (mysqli_num_rows($result) > 0) {
+            while ($brand = mysqli_fetch_assoc($result)) { ?>
+                <li>
+                    <a class="dropdown-item" href="../brand.php?brand_id=<?php echo $brand['id'] ?>">
+
+                        <?php echo $brand['name'] ?> (<?php echo $brand['total'] ?>)
+                    </a>
+                </li>
+            <?php
+            }
+        }
+    }
+}
+
+
+function get_stores()
+{
+    global $connection;
+
+    $query = "SELECT id, name FROM stores";
+
+    if ($result = mysqli_query($connection, $query)) {
+        if (mysqli_num_rows($result) > 0) {
+            while ($store = mysqli_fetch_assoc($result)) { ?>
+                <li>
+                    <a class="dropdown-item" href="../store.php?store_id=<?php echo $store['id'] ?>">
+                        <?php echo $store['name']; ?>
+                    </a>
+                </li>
+                <?php
+            }
+        }
+    }
+}
+
+
+function get_title_store($store_id)
+{
+    global $connection;
+
+    if (isset($store_id)) {
+
+        $query = "SELECT * FROM stores WHERE id = ?";
+
+        // on prépare la requête
+        if ($stmt = mysqli_prepare($connection, $query)) {
+            mysqli_stmt_bind_param(
+                $stmt, // on lui donne la requête préparée(la variable qui est devant mysqli_prepare)
+                'i', // on lui donne les types de parapètres de chaque ? (i=integer, s=string, d=double)
+                $store_id
+            ); // on lui donne les valeurs des ? dans l'ordre
+
+            //on exécute la requête
+            if (mysqli_stmt_execute($stmt)) {
+                // on récupère le résultat de la requête
+                $result = mysqli_stmt_get_result($stmt);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    // on vérifie que l'on a des résultats
+                    while ($store = mysqli_fetch_assoc($result)) {
+                        // le rendu du titre avec la marque du jouet
+                ?>
+                        <h1>Magasin choisi : <?php echo $store['name'] ?> </h1>
+                        <h5>Adresse : <?= $store['postal_code'] ?>, <?= $store['city'] ?> </h5>
+
+<?php
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+function get_all_toys_by_store($store_id)
+{
+    // on récupère la connection
+    global $connection;
+
+    if (isset($store_id)) {
+        // on récupère la requête sql
+        $query = "SELECT
+                    stock.quantity,
+                    toys.id,
+                    toys.name,
+                    toys.price,
+                    toys.image,
+                    stores.name AS store_name,
+                    stores.postal_code,
+                    stores.city,
+                    brands.name AS brand_name
+                FROM stock
+                    INNER JOIN toys ON stock.toy_id = toys.id
+                    INNER JOIN stores ON stock.store_id = stores.id
+                    INNER JOIN brands ON toys.brand_id = brands.id
+                WHERE stores.id = ?";
+
+        // on prépare la requête
+        if ($stmt = mysqli_prepare($connection, $query)) {
+            mysqli_stmt_bind_param(
+                $stmt, // on lui donne la requête préparée(la variable qui est devant mysqli_prepare)
+                'i', // on lui donne les types de parapètres de chaque ? (i=integer, s=string, d=double)
+                $store_id
+            ); // on lui donne les valeurs des ? dans l'ordre
+
+            //on exécute la requête
+            if (mysqli_stmt_execute($stmt)) {
+                // on récupère le résultat de la requête
+                $result = mysqli_stmt_get_result($stmt);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    // on vérifie que l'on a des résultats
+                    while ($toy = mysqli_fetch_assoc($result)) {
+                        // le rendu du titre avec la marque du jouet
+
+                        render_toy_by_store($toy);
+                    }
+                }
             }
         }
     }

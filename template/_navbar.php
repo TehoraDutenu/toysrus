@@ -13,19 +13,22 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active wesh" aria-current="page" href="../toys.php">Accueil</a>
+                        <a class="nav-link active" aria-current="page" href="../toys.php">Accueil</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle wesh" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Par marque
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item wesh" href="#">Action</a></li>
-                            <li><a class="dropdown-item wesh" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item wesh" href="#">Something else here</a></li>
+                            <?php get_toys_by_brand(); ?>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Par magasin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <?php get_stores(); ?>
                         </ul>
                     </li>
                 </ul>
